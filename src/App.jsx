@@ -152,7 +152,7 @@ export default function App() {
       </Suspense>
 
       <WhatsAppFloat />
-      <Preloader />
+      <Preloader minDuration={4000} />
     </div>
   );
 }

@@ -2,52 +2,96 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logoImg from '../assets/logo.png';
 
-export default function Preloader({ minDuration = 120, onFinish }) {
-  const [loading, setLoading] = useState(() => {
-    // If already seen in this session, skip preloader for instant page display
-    if (typeof window !== 'undefined' && sessionStorage.getItem('marvex_preloader_done')) {
-      return false;
-    }
-    return true;
-  });
+// Pre-import key visual assets so they start decoding & caching during preloader
+import heroImg1 from '../assets/hero section/cable management.webp';
+import heroImg2 from '../assets/hero section/earthing parts.webp';
+import heroImg3 from '../assets/hero section/lugs and connectors.webp';
+import heroImg4 from '../assets/hero section/rods.webp';
+import heroImg5 from '../assets/hero section/switchboard component.webp';
+import aboutImg from '../assets/about-us.webp';
+import sig1 from '../assets/signture products/Brass Switchgear Clip Crank with Assambly.webp';
+import sig2 from '../assets/signture products/Hot Line Clamp.webp';
+import sig3 from '../assets/signture products/EARTH RETURN BRUSH WITH BRUSH HOLDER ASSEMBLY.webp';
+import sig4 from '../assets/hero section/rods.png';
+
+export default function Preloader({ minDuration = 4000, onFinish }) {
+  const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
+  // Lock body scroll while preloader is active
+  useEffect(() => {
+    if (loading) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [loading]);
+
+  // Preload all critical images in background while preloader runs
+  useEffect(() => {
+    const assetsToPreload = [
+      heroImg1,
+      heroImg2,
+      heroImg3,
+      heroImg4,
+      heroImg5,
+      aboutImg,
+      sig1,
+      sig2,
+      sig3,
+      sig4
+    ];
+
+    assetsToPreload.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  // Smooth 4-second progress counter from 0% to 100%
   useEffect(() => {
     if (!loading) {
       if (onFinish) onFinish();
       return;
     }
 
-    // Ultra-fast progress counter from 0 to 100
-    const startTime = Date.now();
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
+    const startTime = performance.now();
+    let animId;
+
+    const tick = (now) => {
+      const elapsed = now - startTime;
       const pct = Math.min(Math.round((elapsed / minDuration) * 100), 100);
       setProgress(pct);
 
-      if (elapsed >= minDuration) {
-        clearInterval(interval);
+      if (elapsed < minDuration) {
+        animId = requestAnimationFrame(tick);
+      } else {
+        setProgress(100);
         setTimeout(() => {
           setLoading(false);
-          try {
-            sessionStorage.setItem('marvex_preloader_done', 'true');
-          } catch (e) {}
           if (onFinish) onFinish();
-        }, 60);
+        }, 220);
       }
-    }, 10);
+    };
 
-    return () => clearInterval(interval);
+    animId = requestAnimationFrame(tick);
+
+    return () => {
+      if (animId) cancelAnimationFrame(animId);
+    };
   }, [loading, minDuration, onFinish]);
 
   return (
     <AnimatePresence>
       {loading && (
         <motion.div
-          key="preloader"
+          key="marvex-preloader"
           initial={{ opacity: 1 }}
-          exit={{ opacity: 0, scale: 1.02 }}
-          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.45, ease: 'easeInOut' }}
           style={{
             position: 'fixed',
             top: 0,
@@ -67,39 +111,40 @@ export default function Preloader({ minDuration = 120, onFinish }) {
             overflow: 'hidden'
           }}
         >
-          {/* Subtle background glow circle for depth */}
+          {/* Subtle ambient radial glow behind logo */}
           <div
             style={{
               position: 'absolute',
-              width: '420px',
-              height: '420px',
+              width: '450px',
+              height: '450px',
               borderRadius: '50%',
-              background: 'radial-gradient(circle, rgba(1, 27, 72, 0.05) 0%, rgba(255,255,255,0) 70%)',
+              background: 'radial-gradient(circle, rgba(1, 27, 72, 0.04) 0%, rgba(255, 255, 255, 0) 70%)',
               pointerEvents: 'none'
             }}
           />
 
-          {/* Logo & Content Box */}
+          {/* Centered Box */}
           <motion.div
-            initial={{ opacity: 0, y: 15, scale: 0.94 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
             style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               position: 'relative',
-              zIndex: 2
+              zIndex: 2,
+              textAlign: 'center'
             }}
           >
-            {/* Logo Image */}
+            {/* Centered Company Logo */}
             <motion.div
               animate={{ 
-                scale: [1, 1.02, 1] 
+                scale: [1, 1.025, 1] 
               }}
               transition={{ 
-                duration: 2.4, 
+                duration: 2.5, 
                 repeat: Infinity, 
                 ease: 'easeInOut' 
               }}
@@ -112,42 +157,43 @@ export default function Preloader({ minDuration = 120, onFinish }) {
             >
               <img
                 src={logoImg}
-                alt="Marvex International Logo"
+                alt="Marvex International"
                 style={{
-                  height: '95px',
+                  height: '92px',
                   width: 'auto',
                   maxWidth: '280px',
                   objectFit: 'contain',
-                  filter: 'drop-shadow(0 4px 16px rgba(0,0,0,0.06))'
+                  filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.06))'
                 }}
               />
             </motion.div>
 
-            {/* Progress Bar Track */}
+            {/* Loading Line Track */}
             <div
               style={{
-                width: '220px',
+                width: '260px',
+                maxWidth: '75vw',
                 height: '4px',
-                backgroundColor: '#F1F5F9',
+                backgroundColor: '#E2E8F0',
                 borderRadius: '999px',
                 overflow: 'hidden',
                 position: 'relative',
                 boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.04)'
               }}
             >
-              {/* Animated Filling Line */}
+              {/* Filling Progress Line */}
               <div
                 style={{
                   height: '100%',
                   width: `${progress}%`,
-                  background: 'linear-gradient(90deg, #011B48 0%, #011B48 50%, #6E737D 100%)',
+                  background: 'linear-gradient(90deg, #011B48 0%, #0B3B7B 60%, #1E40AF 100%)',
                   borderRadius: '999px',
-                  boxShadow: '0 0 12px rgba(1, 27, 72, 0.4)',
-                  transition: 'width 0.05s linear',
+                  boxShadow: '0 0 10px rgba(1, 27, 72, 0.35)',
+                  transition: 'width 0.04s linear',
                   position: 'relative'
                 }}
               >
-                {/* Glowing head of progress line */}
+                {/* Glowing Lead Edge */}
                 <div
                   style={{
                     position: 'absolute',
@@ -157,34 +203,31 @@ export default function Preloader({ minDuration = 120, onFinish }) {
                     width: '6px',
                     height: '6px',
                     borderRadius: '50%',
-                    backgroundColor: '#FFF',
-                    boxShadow: '0 0 8px 2px rgba(1, 27, 72, 0.5)'
+                    backgroundColor: '#FFFFFF',
+                    boxShadow: '0 0 6px 2px rgba(1, 27, 72, 0.5)'
                   }}
                 />
               </div>
             </div>
 
-            {/* Subtitle / Status */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+            {/* Bottom Status Text & Percentage */}
+            <div
               style={{
-                marginTop: '18px',
+                marginTop: '14px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                width: '220px'
+                width: '260px',
+                maxWidth: '75vw'
               }}
             >
               <span
                 style={{
-                  fontSize: '10.5px',
+                  fontSize: '11px',
                   fontWeight: 700,
-                  letterSpacing: '1.8px',
+                  letterSpacing: '1.5px',
                   textTransform: 'uppercase',
-                  color: '#64748B',
-                  fontFamily: 'inherit'
+                  color: '#64748B'
                 }}
               >
                 Loading
@@ -200,7 +243,7 @@ export default function Preloader({ minDuration = 120, onFinish }) {
               >
                 {progress}%
               </span>
-            </motion.div>
+            </div>
           </motion.div>
         </motion.div>
       )}

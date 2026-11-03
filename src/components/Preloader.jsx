@@ -1,0 +1,209 @@
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import logoImg from '../assets/logo.png';
+
+export default function Preloader({ minDuration = 120, onFinish }) {
+  const [loading, setLoading] = useState(() => {
+    // If already seen in this session, skip preloader for instant page display
+    if (typeof window !== 'undefined' && sessionStorage.getItem('marvex_preloader_done')) {
+      return false;
+    }
+    return true;
+  });
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    if (!loading) {
+      if (onFinish) onFinish();
+      return;
+    }
+
+    // Ultra-fast progress counter from 0 to 100
+    const startTime = Date.now();
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min(Math.round((elapsed / minDuration) * 100), 100);
+      setProgress(pct);
+
+      if (elapsed >= minDuration) {
+        clearInterval(interval);
+        setTimeout(() => {
+          setLoading(false);
+          try {
+            sessionStorage.setItem('marvex_preloader_done', 'true');
+          } catch (e) {}
+          if (onFinish) onFinish();
+        }, 60);
+      }
+    }, 10);
+
+    return () => clearInterval(interval);
+  }, [loading, minDuration, onFinish]);
+
+  return (
+    <AnimatePresence>
+      {loading && (
+        <motion.div
+          key="preloader"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0, scale: 1.02 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: '#FFFFFF',
+            zIndex: 99999999,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px',
+            userSelect: 'none',
+            overflow: 'hidden'
+          }}
+        >
+          {/* Subtle background glow circle for depth */}
+          <div
+            style={{
+              position: 'absolute',
+              width: '420px',
+              height: '420px',
+              borderRadius: '50%',
+              background: 'radial-gradient(circle, rgba(1, 27, 72, 0.05) 0%, rgba(255,255,255,0) 70%)',
+              pointerEvents: 'none'
+            }}
+          />
+
+          {/* Logo & Content Box */}
+          <motion.div
+            initial={{ opacity: 0, y: 15, scale: 0.94 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative',
+              zIndex: 2
+            }}
+          >
+            {/* Logo Image */}
+            <motion.div
+              animate={{ 
+                scale: [1, 1.02, 1] 
+              }}
+              transition={{ 
+                duration: 2.4, 
+                repeat: Infinity, 
+                ease: 'easeInOut' 
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '32px'
+              }}
+            >
+              <img
+                src={logoImg}
+                alt="Marvex International Logo"
+                style={{
+                  height: '95px',
+                  width: 'auto',
+                  maxWidth: '280px',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 4px 16px rgba(0,0,0,0.06))'
+                }}
+              />
+            </motion.div>
+
+            {/* Progress Bar Track */}
+            <div
+              style={{
+                width: '220px',
+                height: '4px',
+                backgroundColor: '#F1F5F9',
+                borderRadius: '999px',
+                overflow: 'hidden',
+                position: 'relative',
+                boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.04)'
+              }}
+            >
+              {/* Animated Filling Line */}
+              <div
+                style={{
+                  height: '100%',
+                  width: `${progress}%`,
+                  background: 'linear-gradient(90deg, #011B48 0%, #011B48 50%, #6E737D 100%)',
+                  borderRadius: '999px',
+                  boxShadow: '0 0 12px rgba(1, 27, 72, 0.4)',
+                  transition: 'width 0.05s linear',
+                  position: 'relative'
+                }}
+              >
+                {/* Glowing head of progress line */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    right: 0,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: '6px',
+                    height: '6px',
+                    borderRadius: '50%',
+                    backgroundColor: '#FFF',
+                    boxShadow: '0 0 8px 2px rgba(1, 27, 72, 0.5)'
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Subtitle / Status */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              style={{
+                marginTop: '18px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '220px'
+              }}
+            >
+              <span
+                style={{
+                  fontSize: '10.5px',
+                  fontWeight: 700,
+                  letterSpacing: '1.8px',
+                  textTransform: 'uppercase',
+                  color: '#64748B',
+                  fontFamily: 'inherit'
+                }}
+              >
+                Loading
+              </span>
+              <span
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  letterSpacing: '0.5px',
+                  color: '#011B48',
+                  fontFamily: 'monospace'
+                }}
+              >
+                {progress}%
+              </span>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}

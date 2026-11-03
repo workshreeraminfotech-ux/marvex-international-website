@@ -1,0 +1,186 @@
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
+import { Phone, Mail, MapPin, MessageCircle, ArrowRight } from 'lucide-react';
+
+import { addEnquiry } from '../utils/adminStore';
+
+const countryCodes = ['+91', '+1', '+44', '+971', '+65', '+49', '+61', '+27', '+33', '+86'];
+
+export default function ContactSection() {
+  const [form, setForm] = useState({ name: '', email: '', countryCode: '+91', phone: '', product: '', message: '' });
+  const [submitted, setSubmitted] = useState(false);
+
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleChange = (e) => setForm(p => ({ ...p, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+
+    await addEnquiry({
+      source: 'Contact Us Form',
+      name: form.name,
+      email: form.email,
+      phone: `${form.countryCode} ${form.phone}`,
+      product: form.product || 'General Earthing & Brass Enquiry',
+      notes: form.message
+    });
+
+    try {
+      await fetch('https://formsubmit.co/ajax/marvexinternational@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: `New Website Enquiry: ${form.name}`,
+          _replyto: form.email || 'no-reply@marvexinternational.com',
+          _template: 'table',
+          'Full Name': form.name,
+          'Email Address': form.email || 'N/A',
+          'Phone Number': `${form.countryCode} ${form.phone}`,
+          'Product Interest': form.product || 'General Earthing & Brass Enquiry',
+          'Message / Enquiry': form.message
+        })
+      });
+    } catch (err) {
+      console.warn('Mail dispatch notice:', err);
+    }
+
+    setSubmitting(false);
+    setSubmitted(true);
+    // Reset form immediately
+    setForm({ name: '', email: '', countryCode: '+91', phone: '', product: '', message: '' });
+  };
+
+  return (
+    <section className="py-80 bg-light" id="contact-section">
+      <div className="container">
+        <motion.div
+          className="section-title"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="eyebrow">Get In Touch</span>
+          <h2>Contact Us</h2>
+          <p>Reach out for bulk enquiries, custom OEM drawings, export quotes or product samples. We respond within 24 hours.</p>
+        </motion.div>
+
+        <div className="contact-grid">
+          {/* Form */}
+          <motion.div
+            className="contact-form-card"
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6 }}
+          >
+            <h3 style={{ fontFamily: 'var(--font-h)', fontSize: 22, fontWeight: 800, marginBottom: 24 }}>
+              Send Us An Enquiry
+            </h3>
+            <form onSubmit={handleSubmit}>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Full Name *</label>
+                  <input name="name" placeholder="Your Name" value={form.name} onChange={handleChange} required />
+                </div>
+                <div className="form-group">
+                  <label>Email Address</label>
+                  <input name="email" type="email" placeholder="email@example.com" value={form.email} onChange={handleChange} />
+                </div>
+              </div>
+              <div className="form-group">
+                <label>Phone Number</label>
+                <div className="phone-field">
+                  <select name="countryCode" value={form.countryCode} onChange={handleChange}>
+                    {countryCodes.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                  <input name="phone" placeholder="Phone number" value={form.phone} onChange={handleChange} />
+                </div>
+              </div>
+              <div className="form-group">
+                <label>Product Interest</label>
+                <select name="product" value={form.product} onChange={handleChange}>
+                  <option value="">Select a product category</option>
+                  <option>Earthing Solutions</option>
+                  <option>Brass Components</option>
+                  <option>Earthing Accessories</option>
+                  <option>Copper Bonded Rods</option>
+                  <option>Chemical Earthing Electrodes</option>
+                  <option>Brass Cable Glands & Neutral Links</option>
+                  <option>Custom OEM Drawing Development</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Message / Technical Enquiry *</label>
+                <textarea name="message" placeholder="Tell us about your requirements — quantity, drawings, packaging, destination port..." value={form.message} onChange={handleChange} required />
+              </div>
+            {submitted ? (
+              <div style={{ backgroundColor: '#D1FAE5', border: '1px solid #6EE7B7', color: '#065F46', padding: '18px', borderRadius: '16px', textAlign: 'center', fontWeight: 700, marginBottom: '20px' }}>
+                <p style={{ margin: '0 0 10px 0' }}>Thank you for your inquiry, we will respond within 24 hours.</p>
+                <button
+                  type="button"
+                  onClick={() => setSubmitted(false)}
+                  style={{ background: '#047857', color: '#FFFFFF', border: 'none', padding: '6px 14px', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}
+                >
+                  Send Another Enquiry
+                </button>
+              </div>
+            ) : (
+              <button type="submit" className="btn btn-primary" disabled={submitting} style={{ width: '100%', justifyContent: 'center' }}>
+                <span>{submitting ? 'Sending Enquiry...' : 'Submit Enquiry'}</span>
+                <ArrowRight size={16} />
+              </button>
+            )}
+            </form>
+
+            <div className="contact-info-box">
+              <div className="contact-info-item">
+                <div className="ci-icon"><Phone size={18} /></div>
+                <div className="ci-text">
+                  <strong>+91 8200712955</strong>
+                  <span>Mon–Sat, 8am – 8pm IST</span>
+                </div>
+              </div>
+              <div className="contact-info-item">
+                <div className="ci-icon"><Mail size={18} /></div>
+                <div className="ci-text" style={{ minWidth: 0, flex: 1 }}>
+                  <strong style={{ wordBreak: 'break-all', overflowWrap: 'anywhere' }}>marvexinternational@gmail.com</strong>
+                  <span>We reply within 24 hours</span>
+                </div>
+              </div>
+              <div className="contact-info-item">
+                <div className="ci-icon"><MapPin size={18} /></div>
+                <div className="ci-text">
+                  <strong>Rajkot / Jamnagar, Gujarat, India</strong>
+                  <span>Manufacturing & Export Hub</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Map */}
+          <motion.div
+            className="map-card"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.6 }}
+          >
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d59074.89620023602!2d70.7600!3d22.2800!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3959c98ac71cdf0f%3A0x76dd15cfbe93b3b4!2sRajkot%2C%20Gujarat!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin"
+              title="MARVEX INTERNATIONAL - Official Factory & Export Office Location"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
+}

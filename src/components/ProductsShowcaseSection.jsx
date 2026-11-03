@@ -1,0 +1,139 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { useStoreProducts } from '../utils/useStore';
+
+// Top 6 flagship export products (Earthing Solutions & Brass Parts)
+const TOP_6_EXPORT_IDS = [
+  'copper-bonded-earthing-rods',
+  'chemical-earthing-electrodes',
+  'brass-cable-glands',
+  'brass-neutral-links',
+  'rod-to-tape-clamps',
+  'earth-pit-covers'
+];
+
+export default function ProductsShowcaseSection({ onSelectProduct, onOpenQuote, onNavigate }) {
+  const storeProds = useStoreProducts();
+  const allProducts = Array.isArray(storeProds) ? storeProds : [];
+  // Get featured / top products safely
+  let topExportProducts = TOP_6_EXPORT_IDS.map(id => allProducts.find(p => p && p.id === id)).filter(Boolean);
+  if (topExportProducts.length < 6) {
+    topExportProducts = allProducts.slice(0, 6);
+  }
+
+  return (
+    <section className="py-50" id="products-section" style={{ background: '#FFFFFF', padding: '54px 0' }}>
+      <div className="container">
+        
+        {/* Header */}
+        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+          <div className="section-title">
+            <span className="eyebrow">
+              PRECISION MANUFACTURING EXCELLENCE
+            </span>
+            <h2 style={{ color: 'var(--navy)', marginTop: '12px' }}>
+              Our Featured Earthing & Brass Solutions
+            </h2>
+            <p style={{ marginTop: '10px', color: 'var(--gray)', maxWidth: '600px', margin: '10px auto 0' }}>
+              India's premier high-conductivity Copper Bonded Rods, Chemical Electrodes, and Precision CNC Brass Components.
+            </p>
+          </div>
+        </div>
+
+        {/* 6 Products Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '30px' }}>
+          {topExportProducts.map((item, idx) => (
+            <motion.div
+              key={item.id || idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: idx * 0.07 }}
+              style={{ 
+                background: '#FFFFFF', 
+                borderRadius: '24px', 
+                overflow: 'hidden', 
+                border: '1.5px solid var(--border)', 
+                boxShadow: '0 8px 30px rgba(1, 27, 72, 0.06)', 
+                display: 'flex', 
+                flexDirection: 'column',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease'
+              }}
+              whileHover={{ y: -6, boxShadow: '0 20px 40px rgba(1, 27, 72, 0.2)', borderColor: 'var(--gold)' }}
+            >
+              {/* Product Image */}
+              <div 
+                style={{ 
+                  height: '240px', 
+                  backgroundColor: '#FFFFFF', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  padding: '20px', 
+                  borderBottom: '1px solid var(--border)',
+                  position: 'relative',
+                  cursor: 'pointer'
+                }}
+                onClick={() => onSelectProduct ? onSelectProduct(item) : null}
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    objectFit: 'contain',
+                    transition: 'transform 0.4s ease'
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.06)'}
+                  onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                />
+              </div>
+
+              {/* Product Body */}
+              <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <h3 
+                  style={{ fontSize: '20px', fontWeight: 800, color: 'var(--navy)', marginBottom: '10px', lineHeight: 1.3, cursor: 'pointer' }}
+                  onClick={() => onSelectProduct ? onSelectProduct(item) : null}
+                >
+                  {item.title}
+                </h3>
+
+                <p style={{ fontSize: '14px', color: 'var(--gray)', lineHeight: 1.6, marginBottom: '24px', flex: 1, fontWeight: 500 }}>
+                  {item.desc || item.description}
+                </p>
+
+                {/* Action Button */}
+                <div style={{ marginTop: 'auto' }}>
+                  <button
+                    onClick={() => onOpenQuote ? onOpenQuote(item.title) : null}
+                    className="btn btn-primary"
+                    style={{ width: '100%', padding: '12px 18px', fontSize: '13.5px', justifyContent: 'center', display: 'inline-flex', alignItems: 'center', gap: '8px', borderRadius: '10px' }}
+                  >
+                    <span>Request Quote</span>
+                    <ArrowRight size={15} />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* View All Products CTA Link */}
+        <div style={{ textAlign: 'center', marginTop: '48px' }}>
+          <button
+            onClick={() => onNavigate ? onNavigate('products') : null}
+            className="btn btn-primary"
+            style={{ padding: '14px 32px', fontSize: '15px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+          >
+            <span>Explore All {allProducts.length} Products</span>
+            <ArrowRight size={18} />
+          </button>
+        </div>
+
+      </div>
+    </section>
+  );
+}

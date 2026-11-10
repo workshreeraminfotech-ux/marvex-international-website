@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 import foundryMachiningImg from '../assets/foundry-machining.webp';
 import qualityTestingImg from '../assets/quality-testing-lab.webp';
+import containerDispatchImg from '../assets/container-dispatch.webp';
 
 export default function WhyChooseUs({ onNavigate }) {
   const services = [
@@ -26,7 +27,7 @@ export default function WhyChooseUs({ onNavigate }) {
     {
       title: 'Global Export & Container Logistics',
       desc: 'Expert handling of sea-worthy wooden pallet packaging, custom OEM development, certificate of origin, and ocean container shipping.',
-      img: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80',
+      img: containerDispatchImg,
       icon: Anchor,
       tag: 'Global Shipping',
       points: ['Mundra Port Container Dispatch', 'Custom OEM Drawing Development']
@@ -58,7 +59,7 @@ export default function WhyChooseUs({ onNavigate }) {
                 transition={{ duration: 0.6, delay: idx * 0.15 }}
               >
                 <div className="service-card-image">
-                  <img src={item.img} alt={item.title} />
+                  <img src={item.img} alt={item.title} loading="lazy" decoding="async" />
                 </div>
 
                 <div className="service-card-body">

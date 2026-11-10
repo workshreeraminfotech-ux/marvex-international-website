@@ -7,6 +7,8 @@ import CtaBanner from '../components/CtaBanner';
 
 import plantRajkotImg from '../assets/plant-rajkot-earthing.webp';
 import plantJamnagarImg from '../assets/plant-jamnagar-brass.webp';
+import containerDispatchImg from '../assets/container-dispatch.webp';
+import exportHandshakeImg from '../assets/export-handshake.webp';
 
 export default function AboutPage({ onNavigate, onOpenQuote }) {
   useEffect(() => {
@@ -121,6 +123,8 @@ export default function AboutPage({ onNavigate, onOpenQuote }) {
                 <img 
                   src={plantRajkotImg} 
                   alt="Unit 1 Rajkot Earthing Plant" 
+                  loading="lazy"
+                  decoding="async"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(11, 34, 64, 0.88) 100%)' }}></div>
@@ -160,6 +164,8 @@ export default function AboutPage({ onNavigate, onOpenQuote }) {
                 <img 
                   src={plantJamnagarImg} 
                   alt="Unit 2 Jamnagar Brass Plant" 
+                  loading="lazy"
+                  decoding="async"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(11, 34, 64, 0.88) 100%)' }}></div>
@@ -197,8 +203,10 @@ export default function AboutPage({ onNavigate, onOpenQuote }) {
             >
               <div style={{ height: '180px', overflow: 'hidden', position: 'relative' }}>
                 <img 
-                  src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=800&q=80" 
+                  src={containerDispatchImg} 
                   alt="Marvex International Direct Export Firm" 
+                  loading="lazy"
+                  decoding="async"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(11, 34, 64, 0.88) 100%)' }}></div>
@@ -236,8 +244,10 @@ export default function AboutPage({ onNavigate, onOpenQuote }) {
             >
               <div style={{ height: '180px', overflow: 'hidden', position: 'relative' }}>
                 <img 
-                  src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" 
+                  src={exportHandshakeImg} 
                   alt="Global Trade Desks" 
+                  loading="lazy"
+                  decoding="async"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                 />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(11, 34, 64, 0.88) 100%)' }}></div>

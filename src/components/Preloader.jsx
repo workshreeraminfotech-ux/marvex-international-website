@@ -12,7 +12,7 @@ import aboutImg from '../assets/about-us.webp';
 import sig1 from '../assets/signture products/Brass Switchgear Clip Crank with Assambly.webp';
 import sig2 from '../assets/signture products/Hot Line Clamp.webp';
 import sig3 from '../assets/signture products/EARTH RETURN BRUSH WITH BRUSH HOLDER ASSEMBLY.webp';
-import sig4 from '../assets/hero section/rods.png';
+import sig4 from '../assets/hero section/rods.webp';
 
 export default function Preloader({ minDuration = 4000, onFinish }) {
   const [loading, setLoading] = useState(true);

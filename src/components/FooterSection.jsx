@@ -1,6 +1,6 @@
 import React from 'react';
 import { Facebook, Instagram, Linkedin, ChevronRight, Mail, MapPin, Phone } from 'lucide-react';
-import logoImg from '../assets/logo.png';
+import logoImg from '../assets/logoData.js';
 
 export default function FooterSection({ onNavigate }) {
   return (

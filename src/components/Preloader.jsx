@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import logoImg from '../assets/logo.png';
+import logoImg from '../assets/logoData.js';
 
 // Pre-import key visual assets so they start decoding & caching during preloader
 import heroImg1 from '../assets/hero section/cable management.webp';
@@ -124,10 +124,7 @@ export default function Preloader({ minDuration = 4000, onFinish }) {
           />
 
           {/* Centered Box */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease: 'easeOut' }}
+          <div
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -138,16 +135,8 @@ export default function Preloader({ minDuration = 4000, onFinish }) {
               textAlign: 'center'
             }}
           >
-            {/* Centered Company Logo */}
-            <motion.div
-              animate={{ 
-                scale: [1, 1.025, 1] 
-              }}
-              transition={{ 
-                duration: 2.5, 
-                repeat: Infinity, 
-                ease: 'easeInOut' 
-              }}
+            {/* Centered Company Logo - Instant Display without Fade Delay */}
+            <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -158,15 +147,18 @@ export default function Preloader({ minDuration = 4000, onFinish }) {
               <img
                 src={logoImg}
                 alt="Marvex International"
+                fetchPriority="high"
+                decoding="sync"
                 style={{
                   height: '92px',
                   width: 'auto',
                   maxWidth: '280px',
                   objectFit: 'contain',
-                  filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.06))'
+                  filter: 'drop-shadow(0 4px 14px rgba(0,0,0,0.06))',
+                  display: 'block'
                 }}
               />
-            </motion.div>
+            </div>
 
             {/* Loading Line Track */}
             <div
@@ -244,7 +236,7 @@ export default function Preloader({ minDuration = 4000, onFinish }) {
                 {progress}%
               </span>
             </div>
-          </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

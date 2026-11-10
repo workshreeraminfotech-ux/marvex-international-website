@@ -3,7 +3,7 @@ import {
   Menu, X, MapPin, Mail, Phone, Download, ChevronDown, ChevronRight,
   Zap, ShieldCheck, Link2, Cpu, Sparkles, Wrench, Layers, Hexagon, Settings, LayoutGrid
 } from 'lucide-react';
-import logoImg from '../assets/logo.png';
+import logoImg from '../assets/logoData.js';
 
 export const PRODUCT_CATEGORIES_MENU = [
   { name: 'Cable Management', icon: Zap },
@@ -65,6 +65,8 @@ export default function Navbar({ activePage, onNavigate, onOpenQuote }) {
                 src={logoImg} 
                 alt="Marvex International" 
                 className="jrp-header-logo-img" 
+                fetchPriority="high"
+                decoding="sync"
                 style={{ 
                   height: '70px', 
                   width: 'auto', 
@@ -282,7 +284,7 @@ export default function Navbar({ activePage, onNavigate, onOpenQuote }) {
           <div className="jrp-offcanvas">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
               <div onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
-                <img src={logoImg} alt="Marvex International" style={{ height: '66px', width: 'auto', objectFit: 'contain', filter: 'contrast(1.08)' }} />
+                <img src={logoImg} alt="Marvex International" fetchPriority="high" decoding="sync" style={{ height: '66px', width: 'auto', objectFit: 'contain', filter: 'contrast(1.08)' }} />
               </div>
               <button onClick={() => setMobileOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--navy)' }}>
                 <X size={24} />

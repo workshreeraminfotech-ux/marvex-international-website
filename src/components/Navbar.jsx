@@ -255,7 +255,8 @@ export default function Navbar({ activePage, onNavigate, onOpenQuote }) {
               <div className="d-none-mobile">
                 <a
                   href="/marvex-international-brochure.pdf"
-                  download="Marvex_International_Product_Brochure.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="brochure-highlight-btn"
                   title="Download Marvex International Product Brochure"
                 >
@@ -351,7 +352,8 @@ export default function Navbar({ activePage, onNavigate, onOpenQuote }) {
               <div style={{ marginTop: '18px' }}>
                 <a 
                   href="/marvex-international-brochure.pdf"
-                  download="Marvex_International_Product_Brochure.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="brochure-highlight-btn" 
                   onClick={() => setMobileOpen(false)} 
                   style={{ width: '100%' }}

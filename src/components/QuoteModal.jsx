@@ -39,7 +39,7 @@ export default function QuoteModal({ isOpen, onClose, initialProduct = '' }) {
     });
 
     try {
-      await fetch('https://formsubmit.co/ajax/marvexinternational@gmail.com', {
+      await fetch('https://formsubmit.co/ajax/sales@marvexinternational.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

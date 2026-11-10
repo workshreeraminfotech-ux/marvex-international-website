@@ -28,7 +28,7 @@ export default function ContactSection() {
     });
 
     try {
-      await fetch('https://formsubmit.co/ajax/marvexinternational@gmail.com', {
+      await fetch('https://formsubmit.co/ajax/sales@marvexinternational.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -149,7 +149,7 @@ export default function ContactSection() {
               <div className="contact-info-item">
                 <div className="ci-icon"><Mail size={18} /></div>
                 <div className="ci-text" style={{ minWidth: 0, flex: 1 }}>
-                  <strong style={{ wordBreak: 'break-all', overflowWrap: 'anywhere' }}>marvexinternational@gmail.com</strong>
+                  <strong style={{ wordBreak: 'break-all', overflowWrap: 'anywhere' }}>sales@marvexinternational.com</strong>
                   <span>We reply within 24 hours</span>
                 </div>
               </div>

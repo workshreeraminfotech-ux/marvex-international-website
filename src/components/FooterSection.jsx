@@ -107,9 +107,9 @@ export default function FooterSection({ onNavigate }) {
                 <Phone size={18} className="contact-icon" />
                 <span>+91 8200712955</span>
               </a>
-              <a href="mailto:marvexinternational@gmail.com" className="footer-contact-item item-link">
+              <a href="mailto:sales@marvexinternational.com" className="footer-contact-item item-link">
                 <Mail size={18} className="contact-icon" />
-                <span>marvexinternational@gmail.com</span>
+                <span>sales@marvexinternational.com</span>
               </a>
             </div>
           </div>

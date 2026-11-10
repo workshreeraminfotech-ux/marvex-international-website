@@ -10,9 +10,9 @@ export default function AnnouncementBar() {
             <Phone size={14} color="#CBD5E1" />
             <span>+91 8200712955</span>
           </a>
-          <a href="mailto:marvexinternational@gmail.com" className="announcement-item">
+          <a href="mailto:sales@marvexinternational.com" className="announcement-item">
             <Mail size={14} color="#CBD5E1" />
-            <span>marvexinternational@gmail.com</span>
+            <span>sales@marvexinternational.com</span>
           </a>
         </div>
 

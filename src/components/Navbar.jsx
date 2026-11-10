@@ -339,10 +339,10 @@ export default function Navbar({ activePage, onNavigate, onOpenQuote }) {
                   <MapPin size={16} style={{ color: 'var(--gold)' }} />
                   <span>Rajkot, Gujarat-360004, INDIA</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <a href="mailto:sales@marvexinternational.com" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: 'inherit' }}>
                   <Mail size={16} style={{ color: 'var(--gold)' }} />
-                  <span>marvexinternational@gmail.com</span>
-                </div>
+                  <span>sales@marvexinternational.com</span>
+                </a>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Phone size={16} style={{ color: 'var(--gold)' }} />
                   <span>+91 8200712955</span>

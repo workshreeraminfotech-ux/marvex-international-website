@@ -72,7 +72,7 @@ export default function ContactUs() {
                 </div>
                 <div>
                   <strong style={{ display: 'block', fontSize: 14, color: '#fff' }}>Email Address:</strong>
-                  <a href="mailto:marvexinternational@gmail.com" style={{ fontSize: 15, color: 'rgba(255, 255, 255, 0.85)' }}>marvexinternational@gmail.com</a>
+                  <a href="mailto:sales@marvexinternational.com" style={{ fontSize: 15, color: 'rgba(255, 255, 255, 0.85)' }}>sales@marvexinternational.com</a>
                 </div>
               </div>
 

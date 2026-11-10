@@ -15,9 +15,9 @@ const contactCards = [
   },
   {
     icon: Mail, label: 'Email Address',
-    value: 'marvexinternational@gmail.com',
+    value: 'sales@marvexinternational.com',
     sub: 'We reply within 24 hours',
-    href: 'mailto:marvexinternational@gmail.com',
+    href: 'mailto:sales@marvexinternational.com',
     color: '#6E737D'
   },
   {
@@ -86,9 +86,9 @@ export default function ContactPage({ initialProduct = '' }) {
     // 1. Save to Local Admin Store
     await addEnquiry(enquiryPayload);
 
-    // 2. Dispatch to marvexinternational@gmail.com via FormSubmit AJAX endpoint
+    // 2. Dispatch to sales@marvexinternational.com via FormSubmit AJAX endpoint
     try {
-      await fetch('https://formsubmit.co/ajax/marvexinternational@gmail.com', {
+      await fetch('https://formsubmit.co/ajax/sales@marvexinternational.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

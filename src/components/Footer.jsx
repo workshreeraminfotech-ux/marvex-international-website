@@ -56,7 +56,7 @@ export default function Footer() {
               <strong>Phone / WhatsApp:</strong> +91 8200712955
             </div>
             <div className="footer-contact">
-              <strong>Email:</strong> marvexinternational@gmail.com
+              <strong>Email:</strong> <a href="mailto:sales@marvexinternational.com" style={{ color: 'inherit', textDecoration: 'none' }}>sales@marvexinternational.com</a>
             </div>
             <p style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.75)' }}>
               <strong>Location:</strong> Rajkot, Gujarat (India)
